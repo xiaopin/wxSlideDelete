@@ -1,0 +1,62 @@
+/* pages/index/index.wxss */
+
+page {
+    width: 100%;
+    min-height: 100%;
+}
+
+.table-cell-container {
+    width: 100%;
+    height: 100rpx;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.table-content-container {
+    width: 100%;
+    height: calc(100% - 2rpx);
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2;
+    overflow: hidden;
+    position: absolute;
+    top: 0rpx;
+}
+.table-info-container image {
+    width: 40rpx;
+    height: 40rpx;
+    background-color: orange;
+}
+.table-arrow-container {
+    width: 40rpx;
+    height: 40rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.table-arrow-container::before {
+    content: '>';
+    color: gray;
+}
+.table-delete-container {
+    width: 200rpx;
+    height: calc(100% - 2rpx);
+    position: absolute;
+    top: 0rpx;
+    right: 0rpx;
+    background-color: red;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+.table-separator {
+    width: 100%;
+    height: 2rpx;
+    background-color: gray;
+    z-index: 3;
+}

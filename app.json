@@ -1,0 +1,12 @@
+{
+  "pages":[
+    "pages/index/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#A20165",
+    "navigationBarTitleText": "滑动删除",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F8F8F8"
+}
+}

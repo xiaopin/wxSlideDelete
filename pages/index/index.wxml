@@ -1,0 +1,19 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+    <block wx:for="{{items}}" wx:key="">
+        <view class="table-cell-container">
+            <view class="table-content-container" style="left:-{{offsetRecord.index == index ? offsetRecord.offset : 0}}rpx;" bindtouchstart="onTableCellTouchStart" bindtouchmove="onTableCellTouchMove" bindtouchend="onTableCellTouchEnd" bindtouchcancel="onTableCellTouchEnd" data-index="{{index}}">
+                <!--可以在这里根据你的表格来进行UI布局,并可以绑定点击事件,切不可给"table-content-container"绑定点击事件-->
+                <view class="table-info-container">
+                    <image src=""></image>
+                    <text>{{item}}</text>
+                </view>
+                <view class="table-arrow-container"></view>
+            </view>
+            <view class="table-delete-container" bindtap="onDeleteButtonTapped" data-index="{{index}}">
+                <text>删除</text>
+            </view>
+            <view class="table-separator"></view>
+        </view>
+    </block>
+</view>
