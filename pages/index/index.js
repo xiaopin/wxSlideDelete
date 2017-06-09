@@ -6,7 +6,7 @@ Page({
      */
     data: {
         items: [],
-        offsetRecord: { 'index': -1, 'startX': 0, 'offset': 0 }, // 偏移记录
+        offsetRecord: { 'index': -1, 'startX': 0, 'offset': 0, 'direction': null }, // 偏移记录
         deleteButtonWidth: 200, // 删除按钮的宽度(rpx)
         pixelScale: 1,
     },
@@ -58,7 +58,11 @@ Page({
         if (event.changedTouches.length != 1) return;
         let index = event.currentTarget.dataset.index;
         let x = event.changedTouches[0].clientX;
-        this.setData({ offsetRecord: { 'index': index, 'startX': x, 'offset': 0 } });
+        let offset = 0;
+        if (this.data.offsetRecord != null && this.data.offsetRecord.index == index) {
+            offset = this.data.offsetRecord.offset;
+        }
+        this.setData({ offsetRecord: { 'index': index, 'startX': x, 'offset': offset, 'direction': null } });
     },
 
     /**
@@ -68,13 +72,26 @@ Page({
         if (event.changedTouches.length != 1) return;
         let index = event.currentTarget.dataset.index;
         let record = this.data.offsetRecord;
-        if (index != Reflect.get(record, 'index')) {
+        if (record == null || index != Reflect.get(record, 'index')) {
             return;
         }
         let clientX = event.changedTouches[0].clientX;
         let startX = Reflect.get(record, 'startX');
-        let distance = Math.max(Math.min((startX - clientX) * this.data.pixelScale, this.data.deleteButtonWidth), 0);
-        Reflect.set(record, 'offset', distance);
+
+        if (Reflect.get(record, 'direction') == undefined) {
+            // 记录手势是左滑还是右滑
+            let direction = startX >= clientX ? 'left' : 'right';
+            Reflect.set(record, 'direction', direction);
+        }
+        if (Reflect.get(record, 'direction') == 'left') { // 👈滑动
+            record.offset = Math.min((startX - clientX) * this.data.pixelScale, this.data.deleteButtonWidth);
+        } else { // 👉滑动
+            if (record.offset > 0) {
+                record.offset = Math.max(this.data.deleteButtonWidth - Math.abs(clientX - startX) * this.data.pixelScale, 0);
+            } else {
+                record = null;
+            }
+        }
         this.setData({ offsetRecord: record });
     },
 
@@ -86,7 +103,7 @@ Page({
         let index = event.currentTarget.dataset.index;
         let record = this.data.offsetRecord;
 
-        if (index == Reflect.get(record, 'index')) {
+        if (record != null && index == Reflect.get(record, 'index')) {
             let offset = Reflect.get(record, 'offset');
             if (offset >= this.data.deleteButtonWidth / 2) {
                 Reflect.set(record, 'offset', this.data.deleteButtonWidth);
